@@ -4,7 +4,11 @@
 # Completed by Anfisa Bogdanenko
 
 import PySimpleGUI as gui
-from PatternGen import PatternGen
+from automaton import Automaton
+
+NUM_ROWS = 300
+NUM_COLS = NUM_ROWS * 2 - 1
+CELL_SIDE = 2
 
 
 def define_layouts():
@@ -13,18 +17,18 @@ def define_layouts():
 
     layout = [[gui.Text('Rule no.', font=('Helvetica', 20)),
                gui.Input(size=10, font=('Helvetica', 20), key='-RULE-', enable_events=True),
-               gui.Button('GENERATE PATTERN', font=('Helvetica', 10), key='-GO-')],
-              [gui.Push(),
-               gui.Text('Shows pattern produced by a corresponding elementary cellular automaton',
-                        font=('Helvetica', 10), pad=(0, 10), key='-MESSAGE-'),
-               gui.Push()],
-              [gui.Graph(canvas_size=(402, 402), graph_bottom_left=(0, 402), graph_top_right=(402, 0), key='-PATTERN-')]]
+               gui.Text('shows a pattern produced by a corresponding elementary cellular automaton',
+                        font=('Helvetica', 15), pad=(10, 10), key='-MESSAGE-'),
+               gui.Push(),
+               gui.Button('GENERATE', font=('Helvetica', 15), pad=(10, 0), key='-GO-')],
+              [gui.Graph(canvas_size=(NUM_COLS * CELL_SIDE, NUM_ROWS * CELL_SIDE),
+                         graph_bottom_left=(0, 402), graph_top_right=(402, 0), key='-PATTERN-')]]
 
     return layout
 
 
 if __name__ == "__main__":
-    pattern_gen = PatternGen()
+    automaton = Automaton(NUM_ROWS)
 
     window = gui.Window('Elementary Cellular Automata Pattern Generator', define_layouts())
 
@@ -44,9 +48,9 @@ if __name__ == "__main__":
             if rule > 255:
                 window['-MESSAGE-'].update("Invalid rule: Enter a rule no. between 0 and 255")
             else:
-                pattern_gen.update_rule(rule)
-                pattern_gen.draw(window['-PATTERN-'])
+                automaton.update_rule(rule)
+                automaton.draw(window['-PATTERN-'])
 
-                window['-MESSAGE-'].update("Shows pattern produced by a corresponding elementary cellular automaton")
+                window['-MESSAGE-'].update('shows a pattern produced by a corresponding elementary cellular automaton')
 
     window.close()
