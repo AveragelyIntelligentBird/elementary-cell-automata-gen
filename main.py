@@ -21,14 +21,13 @@ def define_layouts():
                         font=('Helvetica', 15), pad=(10, 10), key='-MESSAGE-'),
                gui.Push(),
                gui.Button('GENERATE', font=('Helvetica', 15), pad=(10, 0), key='-GO-')],
-              [gui.Graph(canvas_size=(NUM_COLS * CELL_SIDE, NUM_ROWS * CELL_SIDE),
-                         graph_bottom_left=(0, 402), graph_top_right=(402, 0), key='-PATTERN-')]]
+              [gui.Canvas(size=(NUM_COLS * CELL_SIDE, NUM_ROWS * CELL_SIDE), key='-PATTERN-')]]
 
     return layout
 
 
 if __name__ == "__main__":
-    automaton = Automaton(NUM_ROWS)
+    automaton = Automaton(NUM_ROWS, NUM_COLS, CELL_SIDE)
 
     window = gui.Window('Elementary Cellular Automata Pattern Generator', define_layouts())
 
@@ -43,7 +42,7 @@ if __name__ == "__main__":
         if event == '-RULE-' and values['-RULE-'] and values['-RULE-'][-1] not in '0123456789':
             window['-RULE-'].update(values['-RULE-'][:-1])
 
-        if event == '-GO-':
+        if event == '-GO-' and not values['-RULE-'] == "":
             rule = int(values['-RULE-'])
             if rule > 255:
                 window['-MESSAGE-'].update("Invalid rule: Enter a rule no. between 0 and 255")
