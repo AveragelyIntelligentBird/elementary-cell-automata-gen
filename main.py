@@ -3,25 +3,25 @@
 # Elementary Cellular Automata Pattern Generator
 # Completed by Anfisa Bogdanenko
 
-import PySimpleGUI as gui
+import PySimpleGUI as PyGUI
 from automaton import Automaton
 
-NUM_ROWS = 300
+NUM_ROWS = 100
 NUM_COLS = NUM_ROWS * 2 - 1
-CELL_SIDE = 2
+CELL_SIDE = 600 // NUM_ROWS
 
 
 def define_layouts():
     """Defining the layout of the app"""
-    gui.theme('Dark Blue')
+    PyGUI.theme('Dark Blue')
 
-    layout = [[gui.Text('Rule no.', font=('Helvetica', 20)),
-               gui.Input(size=10, font=('Helvetica', 20), key='-RULE-', enable_events=True),
-               gui.Text('shows a pattern produced by a corresponding elementary cellular automaton',
-                        font=('Helvetica', 15), pad=(10, 10), key='-MESSAGE-'),
-               gui.Push(),
-               gui.Button('GENERATE', font=('Helvetica', 15), pad=(10, 0), key='-GO-')],
-              [gui.Canvas(size=(NUM_COLS * CELL_SIDE, NUM_ROWS * CELL_SIDE), key='-PATTERN-')]]
+    layout = [[PyGUI.Text('Rule no.', font=('Helvetica', 20)),
+               PyGUI.Input(size=10, font=('Helvetica', 20), key='-RULE-', enable_events=True),
+               PyGUI.Text('shows a pattern produced by a corresponding elementary cellular automaton',
+                          font=('Helvetica', 15), pad=(10, 10), key='-MESSAGE-'),
+               PyGUI.Push(),
+               PyGUI.Button('GENERATE', font=('Helvetica', 15), pad=(10, 0), key='-GO-')],
+              [PyGUI.Canvas(size=(NUM_COLS * CELL_SIDE, NUM_ROWS * CELL_SIDE), key='-PATTERN-')]]
 
     return layout
 
@@ -29,13 +29,13 @@ def define_layouts():
 if __name__ == "__main__":
     automaton = Automaton(NUM_ROWS, NUM_COLS, CELL_SIDE)
 
-    window = gui.Window('Elementary Cellular Automata Pattern Generator', define_layouts())
+    window = PyGUI.Window('Elementary Cellular Automata Pattern Generator', define_layouts())
 
     while True:
         event, values = window.read()
         print(event, values)
 
-        if event == gui.WIN_CLOSED:
+        if event == PyGUI.WIN_CLOSED:
             break
 
         # Enforces only numeric input
